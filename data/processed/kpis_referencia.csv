@@ -1,0 +1,46 @@
+vista,segmento,periodo,Películas,ROI mediano (%),% rentables,% no recuperan presupuesto,Presupuesto mediano (M USD),Recaudación total (M USD),Multiplicador típico (x)
+General,Todas,Toda la base,3204,130.5641,56.211,24.1885,25.515,391472.084,2.0361
+General,Todas,Desde 2000,2265,115.303,53.245,25.6071,30.0,303605.7488,1.805
+Género agrupado,Action,Toda la base,588,98.2369,49.6599,27.2109,44.0,91459.0882,1.6197
+Género agrupado,Adventure,Toda la base,287,165.2333,60.6272,20.5575,60.0,70872.3161,2.3144
+Género agrupado,Animation,Toda la base,99,163.7818,61.6162,18.1818,76.0,29595.2213,2.3988
+Género agrupado,Comedy,Toda la base,629,148.8986,57.7107,23.0525,20.0,53037.1097,2.1928
+Género agrupado,Crime,Toda la base,141,113.0603,53.1915,25.5319,20.0,9408.5967,1.7327
+Género agrupado,Drama,Toda la base,737,116.3389,53.1886,29.8507,18.0,54091.935,1.7701
+Género agrupado,Fantasy,Toda la base,91,138.4618,59.3407,14.2857,50.0,17057.1918,2.347
+Género agrupado,Horror,Toda la base,196,271.9832,77.551,12.2449,10.9,13242.0951,4.369
+Género agrupado,Otros,Toda la base,172,129.8572,52.3256,26.1628,20.0,17918.9565,2.0906
+Género agrupado,Romance,Toda la base,69,154.3293,53.6232,18.8406,23.0,6924.9702,2.2102
+Género agrupado,Science Fiction,Toda la base,78,176.4978,58.9744,17.9487,35.5,16175.8849,2.156
+Género agrupado,Thriller,Toda la base,116,116.0848,56.0345,23.2759,27.0,11687.0458,1.7809
+Temporada,Resto del año,Toda la base,1540,102.4641,50.5844,28.7662,21.0,129366.7635,1.7787
+Temporada,Temporada alta,Toda la base,1664,163.5485,61.4183,19.9519,31.0,262105.3206,2.3073
+Idioma,Inglés (en),Toda la base,3079,131.1111,56.4469,23.9039,27.0,386317.3593,2.0516
+Idioma,Otros idiomas,Toda la base,125,121.3238,50.4,31.2,8.9,5154.7248,1.6896
+Género agrupado,Action,Desde 2000,412,87.8977,47.5728,25.7282,50.0,73240.3248,1.5882
+Género agrupado,Adventure,Desde 2000,185,123.4364,57.2973,20.5405,85.0,54495.9253,1.9168
+Género agrupado,Animation,Desde 2000,84,135.301,58.3333,19.0476,80.0,26506.7672,2.1203
+Género agrupado,Comedy,Desde 2000,464,133.584,56.681,23.9224,25.0,40815.4796,1.9597
+Género agrupado,Crime,Desde 2000,90,81.1894,43.3333,33.3333,26.0,5909.5508,1.2969
+Género agrupado,Drama,Desde 2000,519,92.4972,49.3256,32.7553,20.0,37910.658,1.5557
+Género agrupado,Fantasy,Desde 2000,64,122.6515,56.25,14.0625,65.5,13294.1717,1.9526
+Género agrupado,Horror,Desde 2000,125,249.211,77.6,15.2,12.6,9217.2864,3.7191
+Género agrupado,Otros,Desde 2000,121,78.5657,47.1074,30.5785,22.5,14661.8214,1.8286
+Género agrupado,Romance,Desde 2000,49,99.25,48.9796,22.449,25.0,4018.3378,1.6772
+Género agrupado,Science Fiction,Desde 2000,49,157.1203,55.102,16.3265,75.0,13107.4671,2.1332
+Género agrupado,Thriller,Desde 2000,102,116.0848,54.902,23.5294,27.61,10426.2861,1.737
+Temporada,Resto del año,Desde 2000,1173,96.9025,49.6164,28.815,25.0,110305.5937,1.6798
+Temporada,Temporada alta,Desde 2000,1092,130.2493,57.1429,22.1612,40.0,193300.1551,1.9501
+Idioma,Inglés (en),Desde 2000,2159,115.3159,53.4507,25.2432,31.0,298922.4722,1.8124
+Idioma,Otros idiomas,Desde 2000,106,90.5596,49.0566,33.0189,11.0,4683.2766,1.6615
+Década,1910,Toda la base,1,2075.3301,100.0,0.0,0.3859,8.3948,21.7533
+Década,1920,Toda la base,3,1049.8681,66.6667,33.3333,0.379,27.0084,1.9355
+Década,1930,Toda la base,12,482.89,100.0,0.0,1.4942,662.809,8.6184
+Década,1940,Toda la base,20,362.2193,95.0,5.0,2.05,592.7508,6.4016
+Década,1950,Toda la base,25,464.0,96.0,4.0,2.8838,383.9422,4.9039
+Década,1960,Toda la base,59,333.3333,76.2712,11.8644,3.6,2228.6289,4.7188
+Década,1970,Toda la base,80,692.5001,81.25,7.5,5.25,6428.8555,8.928
+Década,1980,Toda la base,204,296.8388,70.098,16.6667,13.9,16587.7908,3.3533
+Década,1990,Toda la base,535,110.6312,53.0841,27.1028,30.0,60946.1549,1.816
+Década,2000,Toda la base,1324,98.152,49.6979,28.4743,30.0,155001.7105,1.7082
+Década,2010,Toda la base,941,142.8467,58.2359,21.5728,30.0,148604.0383,1.9506
