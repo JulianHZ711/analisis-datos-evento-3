@@ -7,12 +7,18 @@ Equipo 6 — Películas
 
 ## Integrantes
 
-- Julián
-- Santiago
-- Oscar Alexis
-- Jacobo
+- Julián Zapata Gutierrez
+- Santiago Villada Arboleda
+- Oscar Alexis Pineda Henao
+- Jacobo Osorio Zapata
 
 Nos repartimos el trabajo por commits, rotando entre los cuatro, así que en el historial del repo se puede ver qué hizo cada uno.
+
+## Video
+
+La presentación del proyecto está en YouTube: https://www.youtube.com/watch?v=DGnddDte9H4
+
+Las diapositivas que usamos en el video están en `docs/AnalisisDatos_EventoEvaluativo6.pptx`.
 
 ## Objetivo
 
@@ -68,7 +74,7 @@ analisis-datos-evento-3/
 │   └── 05_analisis_storytelling.ipynb
 ├── dashboard/        # archivo de Power BI y su versión en PDF
 ├── images/           # capturas del dashboard y diagrama del modelo
-└── docs/             # diapositivas y material del video
+└── docs/             # diapositivas del video
 ```
 
 ## Instalación
