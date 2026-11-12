@@ -21,6 +21,10 @@ Igual que en el Evento 3, nos repartimos el trabajo por commits, rotando entre l
 | Santiago | Análisis exploratorio de las cancelaciones · Ajuste de hiperparámetros y evaluación en prueba · Perfiles y estabilidad de los segmentos · Este README |
 | Jacobo | Preprocesamiento sin fuga de información · Importancia de variables y estabilidad del modelo · Reducción de dimensionalidad · Enlace al video y revisión final |
 
+## Video de presentación
+
+[![Link del video de nuestra exposicion en youtube](https://img.youtube.com/vi/cXl7G4aFXCY/maxresdefault.jpg)](https://www.youtube.com/watch?v=cXl7G4aFXCY)
+
 ## Descripción
 
 Una noche de hotel es un producto que se vence: si la habitación queda vacía hoy, esa noche ya no se puede vender después. Cuando un cliente cancela tarde o no llega, el hotel pierde esa plata, y para defenderse sobrevende o pide depósitos, que también tienen su costo. Las dos cosas funcionan mejor si el hotel sabe, cuando entra una reserva, qué tan probable es que se cancele y qué tipo de reserva es.
@@ -69,7 +73,7 @@ evaluacion 4/
 │   │   └── hotel_bookings.csv.zip        # tal como viene de Kaggle
 │   └── processed/
 │       ├── entrenamiento.csv.gz          # 80 % de la base limpia
-│       └── prueba.csv.gz                 # 20 %, se usa una sola vez
+│       └── prueba.csv.gz                 # 20 %, reservado para evaluar e interpretar
 ├── src/
 │   └── preprocesamiento.py               # columnas que entran, preprocesador y particionador
 ├── notebooks/
@@ -100,10 +104,11 @@ git clone https://github.com/JulianHZ711/analisis-datos-evento-3.git
 cd "analisis-datos-evento-3/evaluacion 4"
 python -m venv venv
 # Windows
-venv\Scripts\activate
+.\venv\Scripts\Activate.ps1
 # Linux / macOS
 source venv/bin/activate
 pip install -r requirements.txt
+cd notebooks
 jupyter notebook
 ```
 
@@ -112,11 +117,11 @@ Ojo con dos cosas:
 - La carpeta se llama `evaluacion 4`, con espacio, así que en la terminal siempre va entre comillas.
 - Los notebooks se abren desde la carpeta `notebooks/`, porque las rutas a los datos y a `src/` son relativas a esa carpeta (`../data/...`).
 
-Se corren en orden, del 01 al 05. El 02 vuelve a generar los archivos de `data/processed/`, y como todo usa la semilla 42, salen iguales a los que ya están en el repositorio.
+Se corren en orden, del 01 al 05. El 02 vuelve a generar los archivos de `data/processed/` con semilla 42. Para reproducir la misma partición y las cifras publicadas, también importa usar las mismas versiones de las bibliotecas. Con otras versiones pueden aparecer diferencias pequeñas.
 
-Cuánto se demoran: casi todos tardan pocos minutos, pero el **03 tarda alrededor de dos horas**, porque la búsqueda de hiperparámetros de la SVM (sección 4.2) pasa de una hora por sí sola. Lo medimos en un computador con 12 núcleos. El 05 no vuelve a entrenar la SVM: toma sus cifras de los notebooks 03 y 04, y solo reentrena la logística y el K-Means, que tardan segundos.
+Cuánto se demoran: casi todos tardan pocos minutos. En la revisión final, el **03 tardó unos 78 minutos**, incluidos unos 46 minutos de búsqueda de hiperparámetros de la SVM (sección 4.2). En otra ejecución del equipo tardó alrededor de dos horas. El tiempo depende del equipo y de su carga. El 05 no vuelve a entrenar la SVM: toma sus cifras de los notebooks 03 y 04, y solo reentrena la logística y el K-Means, que tardan segundos.
 
-Lo corrimos con Python 3.12 y 3.13, pandas 3.0 y scikit-learn 1.9.
+El entorno de referencia de la revisión final usa Python 3.14.6 en Windows. Las versiones de las bibliotecas de cálculo y visualización están fijadas en `requirements.txt`; recomendamos usar ese entorno para reproducir las cifras. Diferencias de plataforma o bibliotecas numéricas pueden afectar los últimos decimales.
 
 ## Decisiones técnicas
 
@@ -142,7 +147,7 @@ Las reservas con exactamente las mismas entradas quedan en un mismo `grupo_perfi
 
 ### Sin fuga de información
 
-Todo lo que aprende de los datos (la estandarización, qué categorías son raras, el one-hot) va dentro de un `Pipeline` de scikit-learn, así que en cada partición se ajusta solo con las filas de ajuste. Los hiperparámetros, el umbral y el modelo final se escogieron con validación cruzada, y la prueba se usó una sola vez, al final (notebook 03, sección 4.5).
+Todo lo que aprende de los datos (la estandarización, qué categorías son raras, el one-hot) va dentro de un `Pipeline` de scikit-learn, así que en cada partición se ajusta solo con las filas de ajuste. Los hiperparámetros, el umbral y el modelo final se escogieron con validación cruzada de entrenamiento. La prueba se usó después para evaluar los modelos ya fijados (notebook 03, sección 4.5) y para interpretar sus predicciones por permutación (sección 5), sin volver a seleccionarlos ni ajustar el umbral.
 
 ### Algoritmos
 
@@ -196,9 +201,9 @@ En la búsqueda de hiperparámetros quedó `C=3` con `gamma="scale"`. Con `gamma
 | Modelo | Evaluación | F1 | Recall | Precision | ROC-AUC | PR-AUC |
 |---|---|---|---|---|---|---|
 | Referencia: marcar todas como canceladas | Validación cruzada | 0,452 | 1,000 | 0,292 | 0,500 | 0,292 |
-| Logística (`C=1`, corte 0,086) | Validación cruzada | 0,573 | 0,733 | 0,470 | 0,751 | 0,553 |
+| Logística (`C=1`, corte 0,031) | Validación cruzada | 0,573 | 0,755 | 0,461 | 0,751 | 0,553 |
 | SVM (`C=3`, `gamma="scale"`, corte −0,009) | Validación cruzada | 0,589 | 0,750 | 0,485 | 0,767 | 0,575 |
-| Logística | Prueba | 0,575 | 0,736 | 0,471 | 0,754 | 0,559 |
+| Logística | Prueba | 0,573 | 0,754 | 0,462 | 0,754 | 0,559 |
 | **SVM, modelo escogido** | **Prueba** | **0,590** | **0,750** | **0,486** | **0,771** | **0,579** |
 | Logística entrenada con 2015-2016 (corte 0) | Llegadas de 2017 | 0,548 | 0,758 | 0,430 | 0,727 | 0,482 |
 | SVM entrenada con 2015-2016 (corte 0) | Llegadas de 2017 | 0,555 | 0,730 | 0,447 | 0,729 | 0,483 |
@@ -217,7 +222,7 @@ La SVM queda por encima de la logística en casi todo el recorrido de las dos cu
 
 La agencia y la anticipación son las variables que más usa la SVM: mezclar el código de agencia baja el ROC-AUC en 0,111 y mezclar la anticipación, en 0,063. Les siguen el tipo de cliente, las cancelaciones previas y el segmento de mercado.
 
-Sobre el costo de los errores: escoger el corte por F1 equivale, más o menos, a suponer que una cancelación que no vemos venir le cuesta al hotel unas tres veces lo que cuesta una falsa alarma. Eso es razonable si el modelo se usa para algo barato, como llamar a confirmar, pero no para sobrevender (notebook 03, sección 4.6).
+Escogimos el corte por F1 en validación. En el análisis de sensibilidad, ese corte quedó cerca del que minimiza el costo supuesto cuando pasar por alto una cancelación cuesta tres veces lo que cuesta una falsa alarma. La relación de costos es ilustrativa. Confirmar una reserva y sobrevender una habitación tienen consecuencias distintas (notebook 03, sección 4.6).
 
 ### 3. Componente no supervisado
 
@@ -246,23 +251,23 @@ La cancelación no entró al agrupamiento y aun así los segmentos se separan en
 
 ![Segmentos y cancelación en PCA y t-SNE](images/14_pca_y_tsne.png)
 
-PCA conserva en dos ejes el 56,9 % de la varianza: el primero resume la anticipación, las noches y los huéspedes, y el segundo la proporción de fin de semana. Se pierde casi todo lo del tipo de cliente y el canal. t-SNE conserva mejor qué reservas son vecinas (0,997 contra 0,914 de PCA), pero el tamaño de sus islas y la distancia entre ellas no se pueden leer como reales. En ninguno de los dos planos las canceladas se separan de las no canceladas: es el mismo traslape que limitó al modelo supervisado.
+PCA conserva en dos ejes el 56,9 % de la varianza de la matriz preparada. El primero resume la anticipación, las noches y los huéspedes, y el segundo la proporción de fin de semana. El tipo de cliente y el canal tienen poco peso en ese plano. En la misma muestra, t-SNE conserva mejor las vecindades (0,997 frente a 0,914 de PCA con 15 vecinos). El tamaño de las islas y la distancia entre ellas dependen de la proyección. En ambos planos hay zonas donde coinciden reservas canceladas y no canceladas.
 
 ### 4. Los dos enfoques juntos
 
 ![Cancelación dentro de cada segmento según el riesgo que estima la logística](images/15_riesgo_dentro_de_cada_segmento.png)
 
-El segmento no reemplaza al modelo supervisado. Dentro de las anticipadas y largas, el cuarto de reservas con menor riesgo según la logística cancela el 11,3 % y el de mayor riesgo el 58,8 %. Esa diferencia es mucho más grande que la que hay entre segmentos. El segmento dice dónde se concentra el riesgo, y el puntaje dice a qué reservas atender primero dentro de cada uno (notebook 05, sección 1.3).
+Dentro de las anticipadas y largas, la tasa de cancelación va del 11,2 % en el cuarto de menor riesgo según la logística al 58,8 % en el de mayor riesgo. Esa diferencia es más grande que la que hay entre segmentos. El segmento muestra dónde se concentra el riesgo y el puntaje ayuda a decidir a qué reservas atender primero dentro de cada perfil (notebook 05, sección 1.3).
 
 ![Cancelación según la anticipación y cuándo se cancela](images/16_anticipacion_y_momento_de_cancelar.png)
 
-Las reservas hechas con más de un mes de anticipación son el 60,0 % y dejan el 76,3 % de las cancelaciones. Pero la mayoría avisa con tiempo: en las de 91 a 180 días, el 79,2 % se cancela con un mes o más de margen. O sea que el hotel todavía puede volver a vender esa habitación si reacciona rápido.
+En entrenamiento, las reservas hechas con más de 30 días de anticipación son el 60,0 % y concentran el 76,3 % de las cancelaciones. El tiempo de aviso se midió aparte, en el CSV sin filas idénticas y entre las reservas con estado `Canceled`. En la banda de 91 a 180 días de anticipación, el 79,2 % de esas cancelaciones se registró al menos 30 días antes de la llegada. Ese margen da al hotel la oportunidad de intentar revender la habitación.
 
 ### 5. Estrategias
 
 | Estrategia | A qué reservas apunta | Evidencia principal | Alcance |
 |---|---|---|---|
-| 1. Reconfirmar con tiempo | Más de un mes de anticipación, empezando por el cuarto de mayor riesgo | 76,3 % de las cancelaciones; la mayoría cancela con un mes o más de margen | Grande |
+| 1. Reconfirmar con tiempo | Más de 30 días de anticipación, empezando por el cuarto de mayor riesgo | Estas reservas concentran el 76,3 % de las cancelaciones en entrenamiento | Grande |
 | 2. Revisar las condiciones con las agencias 9 y 240 | Las dos agencias en línea más grandes | 49,8 % de las reservas y 69,2 % de las cancelaciones | Grande |
 | 3. Fidelizar y promover el canal directo | Clientes repetidos y reservas directas | Cancelan 8,4 % y 15,8 %, contra 30,1 % y 32,8 % | Medio, a largo plazo |
 | 4. Pedir garantía a quien ya canceló antes | Clientes con cancelaciones previas | Cancelan 66,5 %, pero son solo el 2,0 % de las reservas | Pequeño |
@@ -276,17 +281,17 @@ Recomendamos empezar por la 1 y la 2, que son las que más cancelaciones tocan, 
 1. **¿Qué permite anticipar una cancelación?** Sobre todo la agencia y la anticipación. Después vienen el historial del cliente (las cancelaciones previas suben el riesgo y ser cliente repetido lo baja), el hotel (el City Hotel cancela más) y el canal (el directo cancela menos que el de agencias).
 2. **¿Qué tan bien se predice con lo que se sabe al reservar?** Moderadamente. La SVM detecta tres de cada cuatro cancelaciones, pero de cada dos reservas que marca, una sí llega (F1 de 0,590 y ROC-AUC de 0,771 en prueba). Sirve para priorizar acciones baratas, no para decidir sobre una reserva sola.
 3. **¿Qué perfiles existen?** Cuatro: escapadas de fin de semana, anticipadas y largas, última hora entre semana y viajes con menores. Son estables, pero la estructura es débil (Silhouette de 0,249): son una forma útil de ordenar las reservas, no tipos naturales.
-4. **¿Cómo se relacionan con las cancelaciones?** Los perfiles que se reservan con tiempo cancelan más (34,6 % y 37,3 %) y los de poca anticipación, menos (21,6 % y 18,6 %). Lo principal para el hotel es concentrarse en las reservas anticipadas, que cancelan más pero casi siempre con tiempo de revender, y en las dos agencias que más cancelan.
+4. **¿Cómo se relacionan con las cancelaciones?** Los perfiles que se reservan con tiempo cancelan más (34,6 % y 37,3 %) y los de poca anticipación, menos (21,6 % y 18,6 %). Por volumen, priorizaríamos las reservas anticipadas y las dos agencias que concentran más cancelaciones.
 
-Nuestra recomendación es usar los dos enfoques juntos: el modelo supervisado para ordenar cada reserva por riesgo cuando entra, y los segmentos para repartir la atención y fijar políticas por perfil. La logística es una alternativa razonable a la SVM si el hotel necesita explicar sus decisiones o reentrenar seguido, porque queda apenas por debajo (F1 de 0,575 contra 0,590 en prueba).
+Nuestra recomendación es usar los dos enfoques juntos: el modelo supervisado para ordenar cada reserva por riesgo cuando entra, y los segmentos para repartir la atención y fijar políticas por perfil. La logística es una alternativa razonable a la SVM si el hotel necesita explicar sus decisiones o reentrenar seguido, porque queda apenas por debajo (F1 de 0,573 contra 0,590 en prueba).
 
 ### 7. Limitaciones
 
 - Son dos hoteles de Portugal, de 2015 a 2017 y antes de la pandemia. Para otro hotel habría que repetir el análisis con sus propios datos.
-- El modelo pierde fuerza con el tiempo (ROC-AUC de 0,729 en 2017), así que hay que reentrenarlo y vigilarlo.
-- No sabemos en qué momento se llena cada campo. Sacar las variables dudosas evitó la fuga, pero también le quitó información al modelo.
+- La SVM obtuvo un ROC-AUC de 0,729 en el ejercicio con llegadas de 2017. El cambio de cohorte y de tamaño de ajuste impide atribuir la diferencia solo al tiempo. Antes de usarla conviene verificar el rendimiento con reservas recientes.
+- No sabemos en qué momento se llena cada campo. Excluir las variables dudosas redujo el riesgo de fuga y también limitó la información disponible para el modelo.
 - Sin número de reserva no se sabe cuáles duplicados son copias. Según cómo se traten, la cancelación es de 37,0 % o de 29,2 %.
-- Las clases se traslapan mucho: hay 1.713 perfiles con exactamente las mismas entradas en los que unas reservas se cancelaron y otras no. Con estas variables, ningún modelo va a acertar mucho más.
+- En entrenamiento hay 1.713 perfiles con exactamente las mismas entradas y resultados distintos. Un modelo que reciba esas mismas entradas no puede distinguir las reservas de un mismo perfil que tuvieron desenlaces opuestos.
 - Faltan variables que probablemente pesan, como las condiciones de cancelación de cada agencia o el motivo del viaje.
 - Los costos de los errores los supusimos. Con los costos reales del hotel, el corte del modelo puede cambiar.
 - Todo son asociaciones en datos históricos, no causas. Las estrategias son hipótesis que hay que probar.
